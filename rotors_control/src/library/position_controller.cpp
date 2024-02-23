@@ -34,6 +34,8 @@
 #include <string>
 #include <sstream>
 #include <iterator>
+#include <iomanip>
+#include <ctime>
 
 #include <inttypes.h>
 
@@ -123,19 +125,27 @@ void PositionController::CallbackSaveData(const ros::TimerEvent& event){
       ofstream filePQCommands;
       ofstream fileDronePosition;
 
-      ROS_INFO("CallbackSavaData function is working. Time: %f seconds, %f nanoseconds", odometry_.timeStampSec, odometry_.timeStampNsec);
+      ROS_INFO("CallbackSaveData function is working. Time: %f seconds, %f nanoseconds", odometry_.timeStampSec, odometry_.timeStampNsec);
 
-      filePropellersVelocity.open("/home/" + user_ + "/PropellersVelocity.csv", std::ios_base::app);
-      fileDroneAttiude.open("/home/" + user_ + "/DroneAttiude.csv", std::ios_base::app);
-      filePWM.open("/home/" + user_ + "/PWM.csv", std::ios_base::app);
-      filePWMComponents.open("/home/" + user_ + "/PWMComponents.csv", std::ios_base::app);
-      fileCommandAttiude.open("/home/" + user_ + "/CommandAttitude.csv", std::ios_base::app);
-      fileRCommand.open("/home/" + user_ + "/RCommand.csv", std::ios_base::app);
-      fileOmegaCommand.open("/home/" + user_ + "/OmegaCommand.csv", std::ios_base::app);
-      fileXeYe.open("/home/" + user_ + "/XeYe.csv", std::ios_base::app);
-      fileDeltaCommands.open("/home/" + user_ + "/DeltaCommands.csv", std::ios_base::app);
-      filePQCommands.open("/home/" + user_ + "/PQCommands.csv", std::ios_base::app);
-      fileDronePosition.open("/home/" + user_ + "/DronePosition.csv", std::ios_base::app);
+      auto t = std::time(nullptr);
+      auto tm = *std::localtime(&t);
+      std::ostringstream oss;
+      oss << std::put_time(&tm,"%Y%m%dT%H%M%S");
+      auto date_str = oss.str();
+
+      ROS_INFO_STREAM("CallbackSaveData log files saved as: " << "/home/" + user_ + "/" + date_str + "_*.csv");
+
+      filePropellersVelocity.open("/home/" + user_ + "/" + date_str + "_PropellersVelocity.csv", std::ios_base::app);
+      fileDroneAttiude.open("/home/" + user_ + "/" + date_str + "_DroneAttiude.csv", std::ios_base::app);
+      filePWM.open("/home/" + user_ + "/" + date_str + "_PWM.csv", std::ios_base::app);
+      filePWMComponents.open("/home/" + user_ + "/" + date_str + "_PWMComponents.csv", std::ios_base::app);
+      fileCommandAttiude.open("/home/" + user_ + "/" + date_str + "_CommandAttitude.csv", std::ios_base::app);
+      fileRCommand.open("/home/" + user_ + "/" + date_str + "_RCommand.csv", std::ios_base::app);
+      fileOmegaCommand.open("/home/" + user_ + "/" + date_str + "_OmegaCommand.csv", std::ios_base::app);
+      fileXeYe.open("/home/" + user_ + "/" + date_str + "_XeYe.csv", std::ios_base::app);
+      fileDeltaCommands.open("/home/" + user_ + "/" + date_str + "_DeltaCommands.csv", std::ios_base::app);
+      filePQCommands.open("/home/" + user_ + "/" + date_str + "_PQCommands.csv", std::ios_base::app);
+      fileDronePosition.open("/home/" + user_ + "/" + date_str + "_DronePosition.csv", std::ios_base::app);
 
       // Saving control signals in a file
       for (unsigned n=0; n < listPropellersVelocity_.size(); ++n) {
