@@ -136,7 +136,7 @@ void PositionController::CallbackSaveData(const ros::TimerEvent& event){
       ROS_INFO_STREAM("CallbackSaveData log files saved as: " << "/home/" + user_ + "/" + date_str + "_*.csv");
 
       filePropellersVelocity.open("/home/" + user_ + "/" + date_str + "_PropellersVelocity.csv", std::ios_base::app);
-      fileDroneAttiude.open("/home/" + user_ + "/" + date_str + "_DroneAttiude.csv", std::ios_base::app);
+      fileDroneAttiude.open("/home/" + user_ + "/" + date_str + "_DroneAttitude.csv", std::ios_base::app);
       filePWM.open("/home/" + user_ + "/" + date_str + "_PWM.csv", std::ios_base::app);
       filePWMComponents.open("/home/" + user_ + "/" + date_str + "_PWMComponents.csv", std::ios_base::app);
       fileCommandAttiude.open("/home/" + user_ + "/" + date_str + "_CommandAttitude.csv", std::ios_base::app);
